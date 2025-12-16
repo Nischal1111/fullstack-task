@@ -2,15 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-  Card,
-  CardBody,
-  CardHeader,
-  Button,
-  Spinner,
-  Chip,
-} from "@heroui/react";
 import { Movie } from "@/types/movie";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft, Film, Loader2, Star } from "lucide-react";
 
 export default function MovieDetail() {
   const params = useParams();
@@ -23,7 +19,7 @@ export default function MovieDetail() {
       try {
         // Try the dedicated endpoint first
         let response = await fetch(`/api/movies/${params.id}`);
-        
+
         if (response.ok) {
           const data = await response.json();
           setMovie(data);
@@ -34,13 +30,13 @@ export default function MovieDetail() {
         // If not found, try fetching from list endpoint with high limit
         // This ensures we get the same data that was shown in the list
         response = await fetch(`/api/movies?page=1&limit=1000`);
-        
+
         if (response.ok) {
           const data = await response.json();
           const foundMovie = data.movies?.find(
             (m: Movie) => m.id === parseInt(params.id as string, 10)
           );
-          
+
           if (foundMovie) {
             setMovie(foundMovie);
           } else {
@@ -64,7 +60,7 @@ export default function MovieDetail() {
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-background via-background to-primary/10">
-        <Spinner size="lg" color="primary" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -74,18 +70,18 @@ export default function MovieDetail() {
       <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/10">
         <div className="container mx-auto px-4 py-8">
           <Card className="max-w-md mx-auto shadow-xl">
-            <CardBody className="p-8 text-center">
-              <div className="text-6xl mb-4">🎬</div>
-              <p className="text-xl font-semibold mb-6 text-foreground">Movie not found</p>
+            <CardContent className="p-8 text-center">
+              <Film className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
+              <p className="text-xl font-semibold mb-6">Movie not found</p>
               <Button
-                color="primary"
                 size="lg"
-                onPress={() => router.push("/")}
+                onClick={() => router.push("/")}
                 className="w-full"
               >
-                ← Back to Movies
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Movies
               </Button>
-            </CardBody>
+            </CardContent>
           </Card>
         </div>
       </div>
@@ -96,76 +92,61 @@ export default function MovieDetail() {
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/10">
       <div className="container mx-auto px-4 py-8">
         <Button
-          color="default"
-          variant="light"
+          variant="ghost"
           className="mb-6"
-          onPress={() => router.push("/")}
-          startContent={<span>←</span>}
+          onClick={() => router.push("/")}
         >
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Movies
         </Button>
 
         <Card className="max-w-5xl mx-auto shadow-2xl overflow-hidden">
-          <CardHeader className="flex flex-col items-start gap-4 p-8 bg-background/95 backdrop-blur-sm">
+          <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10 p-8">
             <div className="w-full">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <CardTitle className="text-4xl md:text-5xl mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                 {movie.title}
-              </h1>
+              </CardTitle>
               <div className="flex flex-wrap gap-2">
-                <Chip 
-                  color="primary" 
-                  variant="flat"
-                  size="lg"
-                  className="font-semibold"
-                >
+                <Badge variant="default" className="text-sm px-3 py-1">
                   {movie.genre}
-                </Chip>
-                <Chip 
-                  color="secondary" 
-                  variant="flat"
-                  size="lg"
-                  className="font-semibold"
-                >
+                </Badge>
+                <Badge variant="secondary" className="text-sm px-3 py-1">
                   {movie.year}
-                </Chip>
+                </Badge>
                 {movie.rating && (
-                  <Chip 
-                    color="warning" 
-                    variant="flat"
-                    size="lg"
-                    className="font-semibold"
-                  >
-                    ⭐ {movie.rating.toFixed(1)}/10
-                  </Chip>
+                  <Badge variant="outline" className="text-sm px-3 py-1">
+                    <Star className="h-3 w-3 fill-yellow-500 text-yellow-500 mr-1" />
+                    {movie.rating.toFixed(1)}/10
+                  </Badge>
                 )}
               </div>
             </div>
           </CardHeader>
-          
-          <CardBody className="p-8 space-y-6">
+
+          <CardContent className="p-8 space-y-6">
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-primary">Director</h3>
-                <p className="text-foreground/80 text-lg">{movie.director}</p>
+                <p className="text-muted-foreground text-lg">{movie.director}</p>
               </div>
-              
+
               {movie.year && (
                 <div className="space-y-2">
                   <h3 className="text-lg font-semibold text-primary">Release Year</h3>
-                  <p className="text-foreground/80 text-lg">{movie.year}</p>
+                  <p className="text-muted-foreground text-lg">{movie.year}</p>
                 </div>
               )}
             </div>
 
             {movie.description && (
-              <div className="space-y-2 pt-4 border-t border-divider">
+              <div className="space-y-2 pt-4 border-t">
                 <h3 className="text-lg font-semibold text-primary">Description</h3>
-                <p className="text-foreground/80 leading-relaxed text-base">
+                <p className="text-muted-foreground leading-relaxed text-base">
                   {movie.description}
                 </p>
               </div>
             )}
-          </CardBody>
+          </CardContent>
         </Card>
       </div>
     </div>

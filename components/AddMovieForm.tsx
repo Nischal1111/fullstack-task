@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardBody, CardHeader, Input, Button } from "@heroui/react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2 } from "lucide-react";
 
 interface AddMovieFormProps {
   onMovieAdded: () => void;
@@ -53,68 +58,93 @@ export default function AddMovieForm({ onMovieAdded }: AddMovieFormProps) {
   };
 
   return (
-    <Card className="shadow-xl border border-divider">
-      <CardHeader className="p-6 bg-gradient-to-r from-primary/10 to-secondary/10">
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground">Add New Movie</h2>
+    <Card className="shadow-xl">
+      <CardHeader className="bg-gradient-to-r from-primary/10 to-secondary/10">
+        <CardTitle className="text-2xl md:text-3xl">Add New Movie</CardTitle>
       </CardHeader>
-      <CardBody className="p-6">
+      <CardContent className="pt-6">
         <form onSubmit={handleSubmit} className="space-y-5">
-          <Input
-            label="Title"
-            placeholder="Enter movie title"
-            value={formData.title}
-            onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            required
-          />
-          <Input
-            label="Genre"
-            placeholder="Enter genre"
-            value={formData.genre}
-            onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
-            required
-          />
-          <Input
-            label="Director"
-            placeholder="Enter director name"
-            value={formData.director}
-            onChange={(e) => setFormData({ ...formData, director: e.target.value })}
-            required
-          />
-          <Input
-            label="Year"
-            type="number"
-            placeholder="Enter release year"
-            value={formData.year}
-            onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-            required
-          />
-          <Input
-            label="Rating (optional)"
-            type="number"
-            step="0.1"
-            min="0"
-            max="10"
-            placeholder="Enter rating (0-10)"
-            value={formData.rating}
-            onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
-          />
-          <Input
-            label="Description (optional)"
-            placeholder="Enter description"
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-          />
+          <div className="space-y-2">
+            <Label htmlFor="title">Title</Label>
+            <Input
+              id="title"
+              placeholder="Enter movie title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="genre">Genre</Label>
+            <Input
+              id="genre"
+              placeholder="Enter genre"
+              value={formData.genre}
+              onChange={(e) => setFormData({ ...formData, genre: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="director">Director</Label>
+            <Input
+              id="director"
+              placeholder="Enter director name"
+              value={formData.director}
+              onChange={(e) => setFormData({ ...formData, director: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="year">Year</Label>
+            <Input
+              id="year"
+              type="number"
+              placeholder="Enter release year"
+              value={formData.year}
+              onChange={(e) => setFormData({ ...formData, year: e.target.value })}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="rating">Rating (optional)</Label>
+            <Input
+              id="rating"
+              type="number"
+              step="0.1"
+              min="0"
+              max="10"
+              placeholder="Enter rating (0-10)"
+              value={formData.rating}
+              onChange={(e) => setFormData({ ...formData, rating: e.target.value })}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Description (optional)</Label>
+            <Textarea
+              id="description"
+              placeholder="Enter description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              rows={4}
+            />
+          </div>
+
           <Button
             type="submit"
-            color="primary"
+            className="w-full"
             size="lg"
-            isLoading={loading}
-            className="w-full font-semibold shadow-lg"
+            disabled={loading}
           >
+            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {loading ? "Adding..." : "Add Movie"}
           </Button>
         </form>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 }

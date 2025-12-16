@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Movie App",
@@ -14,8 +13,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-background text-foreground min-h-screen">
-        <Providers>{children}</Providers>
+      <body className="bg-background text-foreground min-h-screen antialiased">
+        {children}
       </body>
     </html>
   );

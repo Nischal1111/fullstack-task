@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Button, Spinner } from "@heroui/react";
 import { MoviesResponse, Movie } from "@/types/movie";
 import MovieCard from "@/components/MovieCard";
 import AddMovieForm from "@/components/AddMovieForm";
 import Recommendations from "@/components/Recommendations";
 import Pagination from "@/components/Pagination";
+import { Button } from "@/components/ui/button";
+import { Loader2, Plus, X } from "lucide-react";
 
 export default function Home() {
   const [moviesData, setMoviesData] = useState<MoviesResponse | null>(null);
@@ -42,7 +43,7 @@ export default function Home() {
   if (loading && !moviesData) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Spinner size="lg" />
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -56,12 +57,21 @@ export default function Home() {
               Movie Collection
             </h1>
             <Button
-              color="primary"
               size="lg"
-              onPress={() => setShowAddForm(!showAddForm)}
+              onClick={() => setShowAddForm(!showAddForm)}
               className="shadow-lg"
             >
-              {showAddForm ? "Cancel" : "+ Add New Movie"}
+              {showAddForm ? (
+                <>
+                  <X className="mr-2 h-4 w-4" />
+                  Cancel
+                </>
+              ) : (
+                <>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add New Movie
+                </>
+              )}
             </Button>
           </div>
         </div>
@@ -75,12 +85,12 @@ export default function Home() {
         <Recommendations />
 
         <div className="mt-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
             All Movies
           </h2>
           {loading ? (
             <div className="flex justify-center py-16">
-              <Spinner size="lg" color="primary" />
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
           ) : (
             <>
@@ -102,7 +112,7 @@ export default function Home() {
                 </>
               ) : (
                 <div className="text-center py-16">
-                  <p className="text-xl text-foreground/60">No movies found</p>
+                  <p className="text-xl text-muted-foreground">No movies found</p>
                 </div>
               )}
             </>

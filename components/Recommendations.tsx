@@ -1,9 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Card, CardBody, CardHeader, Button, Spinner } from "@heroui/react";
 import { Movie } from "@/types/movie";
 import MovieCard from "./MovieCard";
+import { Button } from "@/components/ui/button";
+import { Loader2, RefreshCw } from "lucide-react";
 
 export default function Recommendations() {
   const [recommendations, setRecommendations] = useState<Movie[]>([]);
@@ -28,24 +29,27 @@ export default function Recommendations() {
   return (
     <div className="mb-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+        <h2 className="text-3xl md:text-4xl font-bold">
           Recommended for You
         </h2>
         <Button
-          color="secondary"
-          variant="flat"
+          variant="secondary"
           size="lg"
-          onPress={fetchRecommendations}
-          isLoading={loading}
-          className="shadow-md"
+          onClick={fetchRecommendations}
+          disabled={loading}
         >
-          🔄 Refresh
+          {loading ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <RefreshCw className="mr-2 h-4 w-4" />
+          )}
+          Refresh
         </Button>
       </div>
 
       {loading ? (
         <div className="flex justify-center py-16">
-          <Spinner size="lg" color="secondary" />
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </div>
       ) : recommendations.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -55,7 +59,7 @@ export default function Recommendations() {
         </div>
       ) : (
         <div className="text-center py-8">
-          <p className="text-foreground/60">No recommendations available</p>
+          <p className="text-muted-foreground">No recommendations available</p>
         </div>
       )}
     </div>

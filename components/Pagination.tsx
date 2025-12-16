@@ -1,4 +1,6 @@
-import { Button } from "@heroui/react";
+"use client";
+
+import { Button } from "@/components/ui/button";
 
 interface PaginationProps {
   currentPage: number;
@@ -28,28 +30,27 @@ export default function Pagination({
   return (
     <div className="flex justify-center items-center gap-2 mt-12 flex-wrap">
       <Button
-        isDisabled={currentPage === 1}
-        onPress={() => onPageChange(currentPage - 1)}
-        variant="flat"
+        disabled={currentPage === 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        variant="outline"
       >
         Previous
       </Button>
 
       {startPage > 1 && (
         <>
-          <Button variant="flat" onPress={() => onPageChange(1)}>
+          <Button variant="outline" onClick={() => onPageChange(1)}>
             1
           </Button>
-          {startPage > 2 && <span className="px-2">...</span>}
+          {startPage > 2 && <span className="px-2 text-muted-foreground">...</span>}
         </>
       )}
 
       {pages.map((page) => (
         <Button
           key={page}
-          color={page === currentPage ? "primary" : "default"}
-          variant={page === currentPage ? "solid" : "flat"}
-          onPress={() => onPageChange(page)}
+          variant={page === currentPage ? "default" : "outline"}
+          onClick={() => onPageChange(page)}
         >
           {page}
         </Button>
@@ -57,17 +58,17 @@ export default function Pagination({
 
       {endPage < totalPages && (
         <>
-          {endPage < totalPages - 1 && <span className="px-2">...</span>}
-          <Button variant="flat" onPress={() => onPageChange(totalPages)}>
+          {endPage < totalPages - 1 && <span className="px-2 text-muted-foreground">...</span>}
+          <Button variant="outline" onClick={() => onPageChange(totalPages)}>
             {totalPages}
           </Button>
         </>
       )}
 
       <Button
-        isDisabled={currentPage === totalPages}
-        onPress={() => onPageChange(currentPage + 1)}
-        variant="flat"
+        disabled={currentPage === totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        variant="outline"
       >
         Next
       </Button>
