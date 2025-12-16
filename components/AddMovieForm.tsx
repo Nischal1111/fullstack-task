@@ -53,12 +53,12 @@ export default function AddMovieForm({ onMovieAdded }: AddMovieFormProps) {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <h2 className="text-2xl font-bold">Add New Movie</h2>
+    <Card className="shadow-xl border border-divider">
+      <CardHeader className="p-6 bg-gradient-to-r from-primary/10 to-secondary/10">
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground">Add New Movie</h2>
       </CardHeader>
-      <CardBody>
-        <form onSubmit={handleSubmit} className="space-y-4">
+      <CardBody className="p-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <Input
             label="Title"
             placeholder="Enter movie title"
@@ -107,10 +107,11 @@ export default function AddMovieForm({ onMovieAdded }: AddMovieFormProps) {
           <Button
             type="submit"
             color="primary"
+            size="lg"
             isLoading={loading}
-            className="w-full"
+            className="w-full font-semibold shadow-lg"
           >
-            Add Movie
+            {loading ? "Adding..." : "Add Movie"}
           </Button>
         </form>
       </CardBody>

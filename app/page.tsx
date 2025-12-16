@@ -48,48 +48,66 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Movie Collection</h1>
-        <Button
-          color="primary"
-          onPress={() => setShowAddForm(!showAddForm)}
-        >
-          {showAddForm ? "Cancel" : "Add New Movie"}
-        </Button>
-      </div>
-
-      {showAddForm && (
-        <div className="mb-8">
-          <AddMovieForm onMovieAdded={handleMovieAdded} />
-        </div>
-      )}
-
-      <Recommendations />
-
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4">All Movies</h2>
-        {loading ? (
-          <div className="flex justify-center py-8">
-            <Spinner size="lg" />
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="container mx-auto px-4 py-8">
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+            <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-primary via-secondary to-primary bg-clip-text text-transparent">
+              Movie Collection
+            </h1>
+            <Button
+              color="primary"
+              size="lg"
+              onPress={() => setShowAddForm(!showAddForm)}
+              className="shadow-lg"
+            >
+              {showAddForm ? "Cancel" : "+ Add New Movie"}
+            </Button>
           </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {moviesData?.movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
-              ))}
-            </div>
+        </div>
 
-            {moviesData && (
-              <Pagination
-                currentPage={currentPage}
-                totalPages={moviesData.totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
-          </>
+        {showAddForm && (
+          <div className="mb-10">
+            <AddMovieForm onMovieAdded={handleMovieAdded} />
+          </div>
         )}
+
+        <Recommendations />
+
+        <div className="mt-12">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-foreground">
+            All Movies
+          </h2>
+          {loading ? (
+            <div className="flex justify-center py-16">
+              <Spinner size="lg" color="primary" />
+            </div>
+          ) : (
+            <>
+              {moviesData?.movies && moviesData.movies.length > 0 ? (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    {moviesData.movies.map((movie: Movie) => (
+                      <MovieCard key={movie.id} movie={movie} />
+                    ))}
+                  </div>
+
+                  {moviesData && (
+                    <Pagination
+                      currentPage={currentPage}
+                      totalPages={moviesData.totalPages}
+                      onPageChange={handlePageChange}
+                    />
+                  )}
+                </>
+              ) : (
+                <div className="text-center py-16">
+                  <p className="text-xl text-foreground/60">No movies found</p>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ export default function Pagination({
   }
 
   return (
-    <div className="flex justify-center items-center gap-2 mt-8">
+    <div className="flex justify-center items-center gap-2 mt-12 flex-wrap">
       <Button
         isDisabled={currentPage === 1}
         onPress={() => onPageChange(currentPage - 1)}

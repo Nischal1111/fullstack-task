@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { HeroUIProvider } from "@heroui/react";
 import "./globals.css";
+import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: "Movie App",
@@ -13,11 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <HeroUIProvider>
-          {children}
-        </HeroUIProvider>
+    <html lang="en" className="dark">
+      <body className="bg-background text-foreground min-h-screen">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
